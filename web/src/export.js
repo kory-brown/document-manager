@@ -52,6 +52,7 @@ export async function exportDocument(projectName, doc, theme, allDocs = []) {
     triggerDownload(blob, `${doc.id}.zip`);
 
     // ── 5. Download updated manifest.json ─────────────────────────────────────
+    // Delayed to avoid browsers silently dropping the second simultaneous download.
     const manifestIds = allDocs.length > 0
         ? allDocs.map(d => d.id)
         : [doc.id];
@@ -59,6 +60,7 @@ export async function exportDocument(projectName, doc, theme, allDocs = []) {
         [JSON.stringify(manifestIds, null, 2)],
         { type: 'application/json' }
     );
+    await new Promise(resolve => setTimeout(resolve, 400));
     triggerDownload(manifestBlob, 'manifest.json');
 }
 
