@@ -18,13 +18,12 @@ import viewerTemplate from './viewer-template.html?raw';
 import { getProjectImagesDirHandle } from './fs.js';
 
 /**
- * Exports a single document as a downloadable ZIP file and updates manifest.json.
+ * Exports a single document as a downloadable ZIP file.
  * @param {string} projectName
  * @param {object} doc - document object from AppState.data.documents
  * @param {object} theme - AppState.data.theme
- * @param {Array}  allDocs - all documents in the project (for manifest)
  */
-export async function exportDocument(projectName, doc, theme, allDocs = []) {
+export async function exportDocument(projectName, doc, theme) {
     const zip = new JSZip();
     const docFolder = zip.folder(doc.id);
 
@@ -50,18 +49,18 @@ export async function exportDocument(projectName, doc, theme, allDocs = []) {
     // ── 4. Generate and download ZIP ──────────────────────────────────────────
     const blob = await zip.generateAsync({ type: 'blob' });
     triggerDownload(blob, `${doc.id}.zip`);
+}
 
-    // ── 5. Download updated manifest.json ─────────────────────────────────────
-    // Delayed to avoid browsers silently dropping the second simultaneous download.
-    const manifestIds = allDocs.length > 0
-        ? allDocs.map(d => d.id)
-        : [doc.id];
-    const manifestBlob = new Blob(
-        [JSON.stringify(manifestIds, null, 2)],
+/**
+ * Downloads a manifest.json for the given array of document IDs.
+ * @param {string[]} docIds
+ */
+export function exportManifest(docIds) {
+    const blob = new Blob(
+        [JSON.stringify(docIds, null, 2)],
         { type: 'application/json' }
     );
-    await new Promise(resolve => setTimeout(resolve, 400));
-    triggerDownload(manifestBlob, 'manifest.json');
+    triggerDownload(blob, 'manifest.json');
 }
 
 /**

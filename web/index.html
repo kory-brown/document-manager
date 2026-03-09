@@ -63,6 +63,11 @@
             <div id="documents-list" class="documents-list">
                 <p class="empty-state">No documents yet. Click + to add one.</p>
             </div>
+            <div class="sidebar-footer">
+                <button id="manifest-btn" class="btn btn-secondary sidebar-footer-btn">
+                    <span>📋</span><span>Generate Manifest</span>
+                </button>
+            </div>
         </aside>
 
         <!-- Editor Panel -->
@@ -221,6 +226,31 @@
             <div class="modal-footer">
                 <button id="delete-cancel-btn" class="btn btn-secondary">Cancel</button>
                 <button id="delete-confirm-btn" class="btn btn-danger">Delete Document</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manifest Modal -->
+    <div id="manifest-modal" class="modal" style="display: none;">
+        <div class="modal-content modal-content--narrow">
+            <div class="modal-header">
+                <h2>Generate Manifest</h2>
+                <button class="modal-close" id="close-manifest-modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <p class="manifest-modal-intro">Select the documents to include in <code>manifest.json</code>. Deploy this file alongside your exported documents so the Documents index page can find them.</p>
+                <div class="manifest-select-actions">
+                    <button id="manifest-select-all" class="btn-link">Select all</button>
+                    <span class="manifest-divider">·</span>
+                    <button id="manifest-deselect-all" class="btn-link">Deselect all</button>
+                </div>
+                <div id="manifest-doc-list" class="manifest-doc-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="manifest-cancel-btn" class="btn btn-secondary">Cancel</button>
+                <button id="manifest-download-btn" class="btn btn-primary">
+                    <span>📋</span><span>Download manifest.json</span>
+                </button>
             </div>
         </div>
     </div>

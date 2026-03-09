@@ -187,6 +187,109 @@ body {
     padding: 1rem;
 }
 
+.sidebar-footer {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.sidebar-footer-btn {
+    width: 100%;
+    height: 36px;
+    padding: 0 1rem;
+    font-size: 0.85rem;
+    gap: 6px;
+    justify-content: center;
+}
+
+/* Manifest Modal */
+.manifest-modal-intro {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.manifest-modal-intro code {
+    background: var(--color-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
+
+.manifest-select-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+}
+
+.manifest-divider {
+    color: var(--color-text-muted);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--color-primary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-link:hover {
+    color: var(--color-primary-dark);
+}
+
+.manifest-doc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.manifest-doc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background var(--transition);
+    user-select: none;
+}
+
+.manifest-doc-item:hover {
+    background: var(--color-bg);
+}
+
+.manifest-doc-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.manifest-doc-item-label {
+    flex: 1;
+}
+
+.manifest-doc-item-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.manifest-doc-item-id {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    font-family: monospace;
+}
+
 .document-item {
     padding: 1rem;
     background: var(--color-background);
