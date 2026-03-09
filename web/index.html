@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation Manager - AQUAS Blue</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+
+    <!-- Browser Compatibility Banner -->
+    <div id="compat-banner" class="compat-banner">
+        ⚠️ This app requires <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong>.
+        File system access is not supported in your current browser.
+        <a href="https://www.google.com/chrome/" target="_blank">Download Chrome</a>
+    </div>
+
+    <!-- Open Folder Screen (shown on first load before a folder is selected) -->
+    <div id="open-folder-screen" class="open-folder-screen" style="display: none;">
+        <div class="folder-icon">📁</div>
+        <h2>Documentation Manager</h2>
+        <p>
+            Select your <strong>Documentation Manager</strong> folder to get started.
+            This is the top-level folder that contains your <code>Projects/</code> directory.
+        </p>
+        <p class="folder-path-hint">…/Documentation Manager/Projects/[your-project]/</p>
+        <button id="open-folder-btn" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+            Open Projects Folder
+        </button>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1 class="app-title">📚 Documentation Manager</h1>
+            </div>
+            <div class="header-center">
+                <button id="switch-project-btn" class="btn btn-secondary project-selector" title="Switch Project">
+                    <span>📂</span>
+                    <span class="project-label">Project:</span>
+                    <span id="current-project-name" class="project-name">No Project</span>
+                </button>
+            </div>
+            <div class="header-actions">
+                <button id="import-btn" class="btn btn-secondary" title="Import document bundle (folder with data.json + images)">
+                    <span>📥</span><span>Import Document</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Documents</h2>
+                <button id="add-document-btn" class="btn-icon" title="Add new document">
+                    +
+                </button>
+            </div>
+            <div id="documents-list" class="documents-list">
+                <p class="empty-state">No documents yet. Click + to add one.</p>
+            </div>
+        </aside>
+
+        <!-- Editor Panel -->
+        <section class="editor-panel">
+            <div class="editor-panel-scroll">
+                <div id="welcome-screen" class="welcome-screen">
+                    <h2>👋 Welcome to Documentation Manager</h2>
+                    <p>Select a document from the left sidebar or create a new one to get started.</p>
+                    <p>You can also import an existing document bundle.</p>
+                </div>
+
+                <div id="document-editor" class="document-editor" style="display: none;">
+                    <!-- Document Info -->
+                    <div class="editor-section">
+                        <h3>Document Information</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="doc-title">Title *</label>
+                                <input type="text" id="doc-title" placeholder="AQUAS Blue Quick Start User Guide">
+                            </div>
+                            <div class="form-group">
+                                <label for="doc-id">ID *</label>
+                                <input type="text" id="doc-id" placeholder="quick-start">
+                            </div>
+                            <div class="form-group">
+                                <label for="doc-version">Version</label>
+                                <input type="text" id="doc-version" placeholder="1.0">
+                            </div>
+                            <div class="form-group">
+                                <label for="doc-updated">Last Updated</label>
+                                <input type="date" id="doc-updated">
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="doc-description">Description</label>
+                                <textarea id="doc-description" rows="2" placeholder="Brief description of this document..."></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="doc-card-image">Card Image</label>
+                                <div class="file-input-group">
+                                    <input type="text" id="doc-card-image" placeholder="images/document-id/card.svg" readonly>
+                                    <button id="select-card-image-btn" class="btn btn-secondary">Browse</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sections -->
+                    <div class="editor-section">
+                        <div class="section-header">
+                            <h3>Sections</h3>
+                            <button id="add-section-btn" class="btn btn-secondary">+ Add Section</button>
+                        </div>
+                        <div id="sections-container" class="sections-container">
+                            <p class="empty-state">No sections yet. Click "Add Section" to create one.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Docked Toolbar -->
+            <div id="doc-toolbar" class="doc-toolbar" style="display: none;">
+                <div class="doc-toolbar-left">
+                    <button id="delete-document-btn" class="btn btn-danger">
+                        <span>🗑️</span><span>Delete</span>
+                    </button>
+                </div>
+                <div class="doc-toolbar-center">
+                    <button id="preview-document-btn" class="btn btn-secondary">
+                        <span>👁️</span><span>Preview</span>
+                    </button>
+                </div>
+                <div class="doc-toolbar-right">
+                    <button id="save-document-btn" class="btn btn-primary">
+                        <span>💾</span><span>Save</span>
+                    </button>
+                    <button id="export-btn" class="btn btn-primary">
+                        <span>📤</span><span>Export</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Section Modal -->
+    <div id="section-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Add Section</h2>
+                <button class="modal-close" id="close-modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="section-title">Section Title *</label>
+                    <input type="text" id="section-title" placeholder="Getting Started">
+                </div>
+                <div class="form-group">
+                    <label for="section-subtitle">Section Subtitle</label>
+                    <input type="text" id="section-subtitle" placeholder="Your First Steps">
+                </div>
+                <div class="form-group">
+                    <label for="section-body">Section Body (HTML allowed) *</label>
+                    <textarea id="section-body" rows="8" placeholder="Enter content here. You can use HTML like <strong>bold</strong> and <em>italic</em>..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="section-image">Section Image</label>
+                    <div class="file-input-group">
+                        <input type="text" id="section-image" placeholder="images/document-id/section-image.png" readonly>
+                        <button id="select-section-image-btn" class="btn btn-secondary">Browse</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-section-btn" class="btn btn-secondary">Cancel</button>
+                <button id="save-section-btn" class="btn btn-primary">Save Section</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Selection Modal -->
+    <div id="project-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Select or Create Project</h2>
+                <button class="modal-close" id="close-project-modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="project-modal-section">
+                    <h3>Existing Projects</h3>
+                    <div id="existing-projects-list" class="existing-projects-list">
+                        <p class="empty-state">No existing projects found.</p>
+                    </div>
+                </div>
+                <div class="project-modal-divider">OR</div>
+                <div class="project-modal-section">
+                    <h3>Create New Project</h3>
+                    <div class="form-group">
+                        <label for="new-project-name">Project Name</label>
+                        <input type="text" id="new-project-name" placeholder="My Documentation Project">
+                    </div>
+                    <button id="create-project-btn" class="btn btn-primary">Create Project</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirm-modal" class="modal" style="display: none;">
+        <div class="modal-content modal-content--narrow">
+            <div class="modal-header">
+                <h2>Delete Document</h2>
+            </div>
+            <div class="modal-body">
+                <p class="delete-confirm-message">Are you sure you want to delete <strong id="delete-confirm-doc-name"></strong>?</p>
+                <p class="delete-confirm-warning">⚠️ This will permanently remove the document and all of its data. This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="delete-cancel-btn" class="btn btn-secondary">Cancel</button>
+                <button id="delete-confirm-btn" class="btn btn-danger">Delete Document</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast" style="display: none;"></div>
+
+    <script type="module" src="./src/app.js"></script>
+</body>
+</html>
