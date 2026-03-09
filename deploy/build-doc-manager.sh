@@ -60,6 +60,9 @@ done
 # Remove test manifest if present
 rm -f "$WEB_DIR/dist/manifest.json"
 
+echo "→ Adding server guide..."
+cp "$SCRIPT_DIR/DOC-MANAGER-SERVER-GUIDE.md" "$WEB_DIR/dist/SERVER-GUIDE.md"
+
 echo "→ Packaging bundle..."
 mkdir -p "$SCRIPT_DIR/dist"
 rm -f "$SCRIPT_DIR/dist/$ZIP_NAME"
