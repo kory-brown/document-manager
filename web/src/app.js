@@ -237,13 +237,14 @@ async function handleExportDocument() {
     await saveProjectData();
 
     try {
-        showToast('Building export ZIP...', 'info');
+        showToast('Building export...', 'info');
         await exportDocument(
             AppState.currentProjectName,
             AppState.currentDocument,
-            AppState.data.theme
+            AppState.data.theme,
+            AppState.data.documents
         );
-        showToast(`Exported ${AppState.currentDocument.id}.zip successfully!`, 'success');
+        showToast(`Exported ${AppState.currentDocument.id}.zip + manifest.json`, 'success');
     } catch (err) {
         showToast('Export failed: ' + err.message, 'error');
     }

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --color-primary:      #1b78aa;
+            --color-primary-dark: #155f87;
+            --color-surface:      #ffffff;
+            --color-bg:           #f0f2f5;
+            --color-border:       #e2e8f0;
+            --color-text:         #1a202c;
+            --color-text-muted:   #718096;
+            --radius:             12px;
+            --shadow:             0 1px 4px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
+            --shadow-hover:       0 4px 12px rgba(0,0,0,.12), 0 8px 28px rgba(0,0,0,.10);
+            --transition:         0.18s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            min-height: 100vh;
+        }
+
+        /* ── Header ──────────────────────────────────────────────────── */
+        .page-header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 1rem;
+            height: 36px;
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+
+        .back-btn:hover {
+            background: var(--color-bg);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .page-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* ── Main ────────────────────────────────────────────────────── */
+        .page-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+        }
+
+        .page-intro {
+            margin-bottom: 2rem;
+        }
+
+        .page-intro h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-intro p {
+            color: var(--color-text-muted);
+            font-size: 1rem;
+        }
+
+        /* ── Card Grid ───────────────────────────────────────────────── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .doc-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+        }
+
+        .doc-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--color-primary);
+        }
+
+        .doc-card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            background: var(--color-bg);
+            display: block;
+        }
+
+        .doc-card-image-placeholder {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #e8f4fd 0%, #d1e9f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .doc-card-body {
+            padding: 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .doc-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text);
+            line-height: 1.4;
+        }
+
+        .doc-card-meta {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        .doc-card-description {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            line-height: 1.5;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .doc-card-footer {
+            padding: 0.875rem 1.25rem;
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .view-link {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .doc-card:hover .view-link {
+            text-decoration: underline;
+        }
+
+        /* ── States ──────────────────────────────────────────────────── */
+        .state-message {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--color-text-muted);
+        }
+
+        .state-message .icon { font-size: 3rem; margin-bottom: 1rem; }
+        .state-message h3 { font-size: 1.25rem; color: var(--color-text); margin-bottom: 0.5rem; }
+        .state-message p { font-size: 0.9rem; line-height: 1.6; max-width: 400px; margin: 0 auto; }
+        .state-message code { background: #e8f0f7; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.85em; }
+
+        .loading-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skeleton-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .skeleton-img { height: 160px; background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+        .skeleton-body { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+        .skeleton-line { height: 14px; border-radius: 4px; background: linear-gradient(90deg, #eee 25%, #f5f5f5 50%, #eee 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; }
+        .skeleton-line.short { width: 60%; }
+        .skeleton-line.medium { width: 80%; }
+
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body>
+
+    <header class="page-header">
+        <a href="/" class="back-btn">&#8592; Back</a>
+        <h1>📚 Documents</h1>
+    </header>
+
+    <main class="page-main">
+        <div id="content"></div>
+    </main>
+
+    <script>
+        // ── Config ────────────────────────────────────────────────────
+        // Path to manifest.json relative to this page.
+        // The manifest lists all deployed document IDs.
+        const MANIFEST_PATH = './manifest.json';
+
+        // ── Bootstrap ────────────────────────────────────────────────
+        showSkeletons();
+        loadDocuments();
+
+        function showSkeletons() {
+            const skeletonCard = `
+                <div class="skeleton-card">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-line medium"></div>
+                        <div class="skeleton-line short"></div>
+                        <div class="skeleton-line"></div>
+                        <div class="skeleton-line medium"></div>
+                    </div>
+                </div>`;
+            document.getElementById('content').innerHTML =
+                `<div class="loading-grid">${skeletonCard.repeat(6)}</div>`;
+        }
+
+        async function loadDocuments() {
+            const content = document.getElementById('content');
+
+            // 1. Fetch manifest
+            let manifest;
+            try {
+                const res = await fetch(MANIFEST_PATH);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                manifest = await res.json();
+            } catch (err) {
+                content.innerHTML = `
+                    <div class="state-message">
+                        <div class="icon">📋</div>
+                        <h3>No manifest found</h3>
+                        <p>Deploy a <code>manifest.json</code> file alongside this page to list your documents.<br><br>
+                        The Documentation Manager exports an updated <code>manifest.json</code> each time you export a document.</p>
+                    </div>`;
+                return;
+            }
+
+            // Support both array format ["id1","id2"] and object format {"documents":["id1","id2"]}
+            const docIds = Array.isArray(manifest) ? manifest : (manifest.documents || []);
+
+            if (docIds.length === 0) {
+                content.innerHTML = `
+                    <div class="state-message">
+                        <div class="icon">📂</div>
+                        <h3>No documents yet</h3>
+                        <p>Export documents from the Documentation Manager and deploy them to this directory.</p>
+                    </div>`;
+                return;
+            }
+
+            // 2. Load each document's data.json in parallel
+            const results = await Promise.allSettled(
+                docIds.map(id => fetchDocData(id))
+            );
+
+            const docs = results
+                .map((r, i) => r.status === 'fulfilled' ? r.value : { id: docIds[i], error: true })
+                .filter(d => !d.error);
+
+            if (docs.length === 0) {
+                content.innerHTML = `
+                    <div class="state-message">
+                        <div class="icon">⚠️</div>
+                        <h3>Documents could not be loaded</h3>
+                        <p>Make sure the document folders are deployed in the same directory as this page.</p>
+                    </div>`;
+                return;
+            }
+
+            // 3. Render card grid
+            content.innerHTML = `<div class="card-grid" id="card-grid"></div>`;
+            const grid = document.getElementById('card-grid');
+            docs.forEach(d => grid.appendChild(buildCard(d)));
+        }
+
+        async function fetchDocData(id) {
+            const res = await fetch(`./${id}/data/data.json`);
+            if (!res.ok) throw new Error(`Failed to load ${id}`);
+            const data = await res.json();
+            const doc = data.documents[0];
+            return { id, doc };
+        }
+
+        function buildCard({ id, doc }) {
+            const a = document.createElement('a');
+            a.href = `./${id}/viewer.html`;
+            a.className = 'doc-card';
+
+            // Card image — cardImage in export is relative to the doc folder (e.g. "images/card.svg")
+            // so from this page: ./[id]/images/card.svg
+            let imageHtml;
+            if (doc.cardImage) {
+                const imgSrc = `./${id}/${doc.cardImage}`;
+                imageHtml = `<img class="doc-card-image" src="${imgSrc}" alt="${escHtml(doc.title)}"
+                                  onerror="this.replaceWith(makePlaceholder())">`;
+            } else {
+                imageHtml = `<div class="doc-card-image-placeholder">📄</div>`;
+            }
+
+            const version = doc.version ? `v${doc.version}` : '';
+            const updated = doc.lastUpdated ? formatDate(doc.lastUpdated) : '';
+            const meta = [version, updated].filter(Boolean).join(' · ');
+
+            a.innerHTML = `
+                ${imageHtml}
+                <div class="doc-card-body">
+                    <div class="doc-card-title">${escHtml(doc.title)}</div>
+                    ${meta ? `<div class="doc-card-meta">${escHtml(meta)}</div>` : ''}
+                    ${doc.description ? `<div class="doc-card-description">${escHtml(doc.description)}</div>` : ''}
+                </div>
+                <div class="doc-card-footer">
+                    <span class="view-link">View document &#8594;</span>
+                </div>`;
+
+            return a;
+        }
+
+        function makePlaceholder() {
+            const d = document.createElement('div');
+            d.className = 'doc-card-image-placeholder';
+            d.textContent = '📄';
+            return d;
+        }
+
+        function escHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function formatDate(dateStr) {
+            try {
+                return new Date(dateStr).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch { return dateStr; }
+        }
+    </script>
+</body>
+</html>
