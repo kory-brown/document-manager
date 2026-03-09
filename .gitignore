@@ -28,3 +28,9 @@ yarn-error.log*
 # Claude Code local memory
 .claude/
 
+# Local test data for documents preview
+web/public/
+
+# Deployment build output
+deploy/dist/
+
