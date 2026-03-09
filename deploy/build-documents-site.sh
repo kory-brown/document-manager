@@ -47,4 +47,4 @@ echo ""
 echo "✓ Bundle ready: deploy/dist/$ZIP_NAME"
 echo ""
 echo "Contents:"
-unzip -l "$SCRIPT_DIR/dist/$ZIP_NAME" | tail -n +4 | head -n -2
+unzip -l "$SCRIPT_DIR/dist/$ZIP_NAME" | grep -v "^Archive:" | grep -v "^\-\-\-" | grep -v "files$" | tail -n +2

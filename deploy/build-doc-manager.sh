@@ -47,8 +47,22 @@ echo "→ Building app..."
 npm run build
 
 # ── Package ───────────────────────────────────────────────────────────────────
+echo "→ Cleaning test data from build output..."
+# Remove macOS metadata files
+find "$WEB_DIR/dist" -name ".DS_Store" -delete 2>/dev/null || true
+# Remove any exported document folders (identified by data/data.json structure)
+for dir in "$WEB_DIR/dist"/*/; do
+    if [ -f "${dir}data/data.json" ]; then
+        echo "   Removing test document folder: $(basename $dir)"
+        rm -rf "$dir"
+    fi
+done
+# Remove test manifest if present
+rm -f "$WEB_DIR/dist/manifest.json"
+
 echo "→ Packaging bundle..."
 mkdir -p "$SCRIPT_DIR/dist"
+rm -f "$SCRIPT_DIR/dist/$ZIP_NAME"
 cd "$WEB_DIR/dist"
 zip -r "$SCRIPT_DIR/dist/$ZIP_NAME" . --quiet
 
@@ -56,4 +70,4 @@ echo ""
 echo "✓ Bundle ready: deploy/dist/$ZIP_NAME"
 echo ""
 echo "Contents:"
-unzip -l "$SCRIPT_DIR/dist/$ZIP_NAME" | tail -n +4 | head -n -2
+unzip -l "$SCRIPT_DIR/dist/$ZIP_NAME" | grep -v "^Archive:" | grep -v "^\-\-\-" | grep -v "files$" | tail -n +2
