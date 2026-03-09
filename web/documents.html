@@ -36,11 +36,18 @@
             height: 64px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 1.5rem;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 1px 4px rgba(0,0,0,.06);
+        }
+
+        .page-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .back-btn {
@@ -65,6 +72,12 @@
             background: var(--color-bg);
             border-color: var(--color-primary);
             color: var(--color-primary);
+        }
+
+        .header-logo {
+            height: 36px;
+            width: auto;
+            display: block;
         }
 
         .page-header h1 {
@@ -227,8 +240,11 @@
 <body>
 
     <header class="page-header">
-        <a href="/" class="back-btn">&#8592; Back</a>
-        <h1>📚 Documents</h1>
+        <div class="page-header-left">
+            <a href="/" class="back-btn">&#8592; Back</a>
+            <img src="./images/logo.svg" alt="Logo" class="header-logo">
+        </div>
+        <h1>Documents</h1>
     </header>
 
     <main class="page-main">
